@@ -29,7 +29,7 @@ L = np.linalg.cholesky(cov_matrix)
 dt = 1 / 252
 uncorrelated_shocks = np.random.normal(0, 1, (days, 5, simulations))
 
-# THE FIX: Multiplying by np.sqrt(dt) keeps the math realistic
+# Multiplying by np.sqrt(dt) 
 correlated_shocks = np.einsum('ij,tjs->tis', L, uncorrelated_shocks) * np.sqrt(dt)
 
 # 6. Calculate Daily Returns for the Portfolio
@@ -44,7 +44,7 @@ cumulative_returns = np.cumsum(portfolio_returns, axis=0)
 portfolio_paths = initial_value * np.exp(cumulative_returns)
 portfolio_paths = np.vstack([np.full(simulations, initial_value), portfolio_paths])
 
-# 8. Plotting (Professional Fintech Style)
+# 8. Plot
 plt.style.use('dark_background') 
 fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -54,10 +54,10 @@ percentile_95 = np.percentile(portfolio_paths, 95, axis=1)
 median = np.median(portfolio_paths, axis=1)
 x_axis = range(len(median)) 
 
-# Plot a few random paths (blue lines)
+#  few random paths 
 ax.plot(portfolio_paths[:, :50], linewidth=0.7, alpha=0.15, color='#4da6ff')
 
-# THE MAGIC: Shade the 90% Confidence Interval
+#  Shade  90% Confidence Interval
 ax.fill_between(x_axis, percentile_5, percentile_95, color='#00ffcc', alpha=0.15, label='90% Confidence Interval')
 
 # Plot the outer bounds
@@ -74,7 +74,7 @@ ax.set_ylabel('Portfolio Value ', fontsize=12)
 ax.grid(color='gray', linestyle='--', linewidth=0.3, alpha=0.5)
 ax.legend(loc='upper left', frameon=True, facecolor='black', edgecolor='gray')
 
-# Format Y-axis to show dollar signs
+# Format Y-axis  show dollar signs
 ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('${x:,.0f}'))
 
 plt.tight_layout()
