@@ -21,6 +21,19 @@ This model accounts for the **correlation matrix** of a portfolio containing fiv
 
 By applying a Cholesky Decomposition to the covariance matrix, the engine generates correlated random shocks, ensuring the simulated asset paths behave realistically.
 
+##  Mathematical Underpinnings 
+
+Here is the mathematical framework powering the simulation:
+
+1. **Geometric Brownian Motion (GBM):** Stock prices are modeled using the stochastic differential equation: 
+   `dS_t = μ S_t dt + σ S_t dW_t`
+   Where `μ` is the expected drift, `σ` is the volatility, and `dW_t` is the Wiener process (random shock). By integrating this, we generate 10,000 unique price paths.
+
+2. **Cholesky Decomposition:** Assets in a portfolio are not independent; they are correlated. To simulate this, I constructed a Covariance Matrix and decomposed it into a lower triangular matrix using the Cholesky formula (`A = LL^T`). This transforms independent random shocks into correlated shocks, ensuring that if Tech crashes, the Energy sector reacts realistically.
+
+3. **Value at Risk (VaR):** By calculating the 5th percentile of the 10,000 simulated portfolio paths, the engine determines the portfolio's 95% VaR. This quantifies the maximum expected loss over a one-year horizon with 95% statistical confidence.
+
+   
 ##  Key Outputs
 *   **Median Expected Path:** The most likely outcome for the portfolio over a 1-year horizon.
 *   **Value at Risk (VaR):** The 5th percentile worst-case scenario. This tells the investor the maximum expected loss with 95% confidence.
